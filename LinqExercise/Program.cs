@@ -150,7 +150,7 @@ namespace LinqExercise
                     Console.WriteLine($"{kvp.Key}: {kvp.Value.Name}");
                 }
 
-                // 12. בדיקה אם קוף קיים לפי שם (שימוש במילון)
+                // 12. בדיקה אם קוף קיים לפי שם (שימוש במילון)k,l
                 bool doesMonkeyExist = monkeys.MonkeExistByName("Mandrill");
                 Console.WriteLine(doesMonkeyExist);
             }
