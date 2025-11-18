@@ -253,16 +253,13 @@ namespace LinqExercise.Models
 		//the value is the monkey object
 		public Dictionary<string, Monkey> CreateDictionaryFromMonkeyList()
 		{
-			
+			return this.Monkeys.ToDictionary(name => name.Name);
 		}
 		//12 - Use the dictionary created in 11 to do the next search!
 		public bool MonkeExistByName(string name)
 		{
-			foreach(var m in this.Monkeys)
-			{
-				if(m.Name == name) return true;
-			}
-			return false;
+			
+			return is ;
 		}
 	}
 }
