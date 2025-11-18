@@ -2,6 +2,7 @@
 using LinqExercise.Extentions;
 using LinqExercise.Models;
 using System.Linq;
+using System.Xml.Serialization;
 namespace LinqExercise
 {
     public class Program
@@ -20,6 +21,8 @@ namespace LinqExercise
         }
         static void Main(string[] args)
         {
+            int i = 8;
+
 
             Func<int, bool> IsEven = (x) => x % 2 == 0;
             Console.WriteLine(IsEven(5));
@@ -62,12 +65,19 @@ namespace LinqExercise
                 new Student() { Name = "Frank", Age = 24, grade = 92, ClassName = "Math" },
                 };
 
-			#region דוגמאות LINQ
+            #region דוגמאות LINQ
 
-			//---Linq Methods---
-			//Max
-			//FirstOrDefault
-			//SingleOrDefault
+            bool isExist = students.Any(x => x.grade == 90);
+            // למעלה: האם קיים מישהו עם ציון 90 ברשימה
+
+            //---Linq Methods---
+            var max_student = students.Max((s) => s.grade);
+            //Max
+            var st = students.FirstOrDefault(x => x.grade >= 80);
+            //FirstOrDefault
+            Student s = students.SingleOrDefault(x => x.grade == 88);
+            //SingleOrDefault
+            List <Student> new_s = students.Where(x => x.grade > 85).ToList();
 			//where
             //where Query
 			//OrderBy
@@ -85,35 +95,43 @@ namespace LinqExercise
             try
             {
                 // 1. הדפסת נתוני קוף לפי שם
+                //42
                 Monkey monkeyByName = monkeys.SearchMonkeyByName("Baboon");
                 Console.WriteLine(monkeyByName);
 
                 // 2. הדפסת כל הקופים לפי מיקום
+                // 42
                 List<Monkey> monkeysByLocation = monkeys.GetAllMonkeysPerLocation("Africa & Asia");
                 monkeysByLocation.ForEach(m => Console.WriteLine(m.Name));
 
                 // 3. בדיקה אם יש קוף במיקום מסוים
+                //42
                 bool isMonkeyInLocation = monkeys.IsThereMonkeyInThatLocation("Japan");
                 Console.WriteLine(isMonkeyInLocation);
 
                 // 4. מיון לפי מיקום ושם
+                //42
                 List<Monkey> sortedMonkeys = monkeys.SortByLocattionAndName();
                 sortedMonkeys.ForEach(m => Console.WriteLine($"{m.Location} - {m.Name}"));
 
                 // 5. חיפוש קוף לפי שם (שימוש ב-LINQ)
+                //42
                 Monkey monkeyByNameQuery = monkeys.SearchMonkeyByNameQuery("Capuchin Monkey");
                 Console.WriteLine(monkeyByNameQuery);
 
                 // 6. הדפסת כל הקופים לפי מיקום (שימוש ב-LINQ)
+                //42
                 var monkeysByLocationQuery = monkeys.GetAllMonkeysPerLocationQuery("Central & South America");
                 monkeysByLocationQuery.ForEach(m => Console.WriteLine(m.Name));
 
                 // 7. מיון לפי מיקום ושם (שימוש ב-LINQ)
+                //42
                 var sortedMonkeysQuery = monkeys.SortByLocattionAndNameQuery();
                 sortedMonkeysQuery.ForEach(m => Console.WriteLine($"{m.Location} - {m.Name}"));
 
                 // 8. הדפסת מספר הקופים לפי מיקום
-                monkeys.PrintNumberOfMonkeysPerLocation();
+                // 42
+                //monkeys.PrintNumberOfMonkeysPerLocation();
 
                 // 9. הדפסת מספר הקופים לפי מיקום (שימוש ב-LINQ)
                 monkeys.PrintNumberOfMonkeysPerLocationQuery();
@@ -142,6 +160,23 @@ namespace LinqExercise
             }
 			#endregion
 		}
+        public static int maxBy(List<Student> students, Func <Student, int> param)
+        {
+            int max = -1;
+
+            foreach (var student in students)
+            {
+                int num = param(student);
+                if (max < param(student))
+                    max = param(student);
+            }
+            return max;
+            if (students[0].grade == param(students[0]))
+               return students.Max((student) => student.grade);
+
+            return students.Max((student) => student.Age);
+
+        }
 	}
 }
 

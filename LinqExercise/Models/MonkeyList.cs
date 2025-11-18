@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,7 +20,10 @@ namespace LinqExercise.Models
 			FillList();
 		}
 
-		private void FillList()
+
+
+
+        private void FillList()
 		{
 
 			Monkeys.Add(new Monkey
@@ -161,66 +165,104 @@ namespace LinqExercise.Models
 		//1
 		public Monkey SearchMonkeyByName(string name)
 		{
+            return this.Monkeys.FirstOrDefault(m => m.Name == name);
 
-			throw new NotImplementedException("not implemented yet");
-		}
+        }
 		//2
 		public List<Monkey> GetAllMonkeysPerLocation(string location)
 		{
-			throw new NotImplementedException("not implemented yet");
-		}
+            return this.Monkeys.Where(m => m.Location == location).ToList();
+        }
 		//3
 		public bool IsThereMonkeyInThatLocation(string location)
 		{
-			throw new NotImplementedException("not implemented yet");
+			return this.Monkeys.Any(m => m.Location == location);
 		}
 		//4
 		public List<Monkey> SortByLocattionAndName()
 		{
-
-			throw new NotImplementedException("not implemented yet");
-		}
+            var r = this.Monkeys.OrderBy(m => m.Location).ThenBy(o => o.Name);
+            return r.ToList();
+        }
 		//5
 		public Monkey SearchMonkeyByNameQuery(string name)
 		{
-			throw new NotImplementedException("not implemented yet");
-		}
+            var l = from m in this.Monkeys
+                    group m by m.Location into g
+                    select new { Key = g.Key, Items = g.ToList() };
+            int u = 7;
+
+
+
+            var ls = from m in this.Monkeys
+					 where m.Name == name
+					 select m;
+			return this.Monkeys[0];
+	//		return ls;
+        }
 		//6
 		public List<Monkey> GetAllMonkeysPerLocationQuery(string location)
 		{
-			throw new NotImplementedException("not implemented yet");
-		}
+            var ls = from l in this.Monkeys
+					 where l.Location == location
+					 select l;
+			return ls.ToList();
+            
+        }
 
 		//7
 		public List<Monkey> SortByLocattionAndNameQuery()
 		{
-			throw new NotImplementedException("not implemented yet");
-		}
-		//8
-		public void PrintNumberOfMonkeysPerLocation()
+
+			var l = from m in this.Monkeys
+                    orderby m.Location ascending, m.Name descending
+					select m;
+
+            return this.Monkeys;
+
+            //		  return l;
+
+        }
+        //8
+        public void PrintNumberOfMonkeysPerLocation()
 		{
-			Console.WriteLine("not Implemented yet");
-		}
-		//9
-		public void PrintNumberOfMonkeysPerLocationQuery()
+            var mo = this.Monkeys.GroupBy(m => m.Location);
+			foreach(var m in mo)
+			{
+                Console.WriteLine(m.Key + m.Element.ToString());
+			}
+
+        }
+        //9
+        public void PrintNumberOfMonkeysPerLocationQuery()
 		{
-		Console.WriteLine("not Implemented yet");
-		}
-		//10
-		public Monkey[] GetAllMonkeysByName(string name)
+            var l = from m in this.Monkeys
+                    group m by m.Location into g
+                    select new { Key = g.Key, Items = g.Count() };
+			
+
+            foreach (var location in l) { Console.WriteLine("Location: " + location.Key + " Number of monkeys: " + location.Element.ToString()); }
+
+        }
+        //10
+        public Monkey[] GetAllMonkeysByName(string name)
 		{
-			throw new NotImplementedException("not implemented yet");
-		}
+			return this.Monkeys.Where(m =>  m.Name == name).ToArray();
+        }
 		//11 - Create a dictionary where the key is the name of the monkey and
 		//the value is the monkey object
 		public Dictionary<string, Monkey> CreateDictionaryFromMonkeyList()
 		{
-			throw new NotImplementedException("not implemented yet");
+			
 		}
 		//12 - Use the dictionary created in 11 to do the next search!
 		public bool MonkeExistByName(string name)
 		{
-			throw new NotImplementedException("not implemented yet");
+			foreach(var m in this.Monkeys)
+			{
+				if(m.Name == name) return true;
+			}
+			return false;
 		}
 	}
 }
